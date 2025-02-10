@@ -1,0 +1,54 @@
+//////////////////////////////
+// By Waris Ibrahimi [5550343]
+//  & Danial Abed [5474914]
+//////////////////////////////
+#include <iostream>
+#include "program.h"
+
+Program::Program(int arith,
+            int store,
+            int load,
+            int branch) {
+            numArith = arith;
+            numStore = store;
+            numLoad = load;
+            numBranch = branch;
+            numTotal = numArith + numStore + numLoad + numBranch;}
+
+Program::Program(int instrtot,
+            double arithfrac,
+            double storefrac,
+            double loadfrac) {
+            numArith = instrtot + arithfrac;
+            numStore = instrtot + storefrac;
+            numLoad = instrtot + loadfrac;
+            numBranch = instrtot - (numArith + numStore + numLoad);
+            numTotal = instrtot;}
+
+int Program::numTot() {
+    return numTotal;}
+
+void Program::printStats() {
+    std::cout << "Arithmetic and Logic calculations: " << numArith << std::endl;
+    std::cout << "Store instructions: " << numStore << std::endl;
+    std::cout << "Load instructions: " << numLoad << std::endl;
+    std::cout << "Branch instructions: " << numBranch << std::endl;
+    std::cout << "Total instructions: " << numTotal << std::endl;}
+
+
+int Program::getnumTotal() {
+    return numTotal;}
+
+int Program::getnumArith() {
+    return numArith;}
+
+int Program::getnumStore() {
+    return numStore;}
+
+int Program::getnumLoad() {
+    return numLoad;}
+
+int Program::getnumBranch() {
+    return numBranch;}
+
+    
