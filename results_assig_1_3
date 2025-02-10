@@ -1,0 +1,68 @@
+Computer 1
+Clock rate: 1 GHz
+Arithmetic CPI: 2
+Store CPI: 2
+Load CPI: 3
+Branch CPI: 4
+Execution time =2.2727e-322
+MIPS = 6.95133e-310
+Global CPI PC_1= 2.75
+Global MIPS= 363.636
+
+Program A
+Execution Time 2.33e-06
+MIPS 480.687
+
+Program B
+Execution Time 4.66e-06
+MIPS 480.687
+
+Program C
+Execution Time -2e-06
+MIPS -1000
+
+Computer 2
+Clock rate: 1.2 GHz
+Arithmetic CPI: 2
+Store CPI: 3
+Load CPI: 4
+Branch CPI: 3
+Execution time =6.95251e-310
+MIPS = 0
+Global CPI PC_2= 3
+Global MIPS= 400
+
+Program A
+Execution Time 2.00833e-06
+MIPS 557.676
+
+Program B
+Execution Time 4.01667e-06
+MIPS 557.676
+
+Program C
+Execution Time 5e-06
+MIPS 400
+
+Computer 3
+Clock rate: 2 GHz
+Arithmetic CPI: 2
+Store CPI: 2
+Load CPI: 4
+Branch CPI: 6
+Execution time =6.95251e-310
+MIPS = 6.95133e-310
+Global CPI PC_3= 3.5
+Global MIPS= 571.429
+
+Program A
+Execution Time 1.21e-06
+MIPS 925.62
+
+Program B
+Execution Time 2.42e-06
+MIPS 925.62
+
+Program C
+Execution Time -4e-06
+MIPS -500
