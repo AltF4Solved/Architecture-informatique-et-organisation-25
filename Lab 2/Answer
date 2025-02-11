@@ -1,0 +1,69 @@
+
+• Does the symbolic representation in the C++ program match this MIPS assembly
+code? Explain!
+
+$4 = 48 (sum of four 12s)
+$2 = 0 (loop counter reached zero)
+$1 = 12 (constant value used for addition)
+$3 = 1 (decrement step for the counter)
+
+This confirms that the MIPS assembly performed the expected behavior of summing four instances of 12 into $4 while decrementing $2 from 4 to 0.
+
+
+Yes, the equivalent C++ code would be:
+
+int sum = 0;
+int counter = 4;
+int value = 12;
+
+while (counter != 0) {
+    sum += value;
+    counter -= 1;
+}
+
+
+Final values:
+
+    sum = 48
+    counter = 0
+
+
+
+What does this program do? Verify your answer by compiling your C++ pro-
+gram and running the MIPS program in the simulator. Make sure your program
+compiles without any warnings and show the working simulator to a TA.
+
+
+Value Register : 0      0
+Value Register : 1      12
+Value Register : 2      0
+Value Register : 3      1
+Value Register : 4      48
+Value Register : 5      0
+Value Register : 6      0
+Value Register : 7      0
+Value Register : 8      0
+Value Register : 9      0
+Value Register : 10     0
+Value Register : 11     0
+Value Register : 12     0
+Value Register : 13     0
+Value Register : 14     0
+Value Register : 15     0
+Value Register : 16     0
+Value Register : 17     0
+Value Register : 18     0
+Value Register : 19     0
+Value Register : 20     0
+Value Register : 21     0
+Value Register : 22     0
+Value Register : 23     0
+Value Register : 24     0
+Value Register : 25     0
+Value Register : 26     0
+Value Register : 27     0
+Value Register : 28     0
+Value Register : 29     0
+Value Register : 30     0
+Value Register : 31     0
+Program Count : 6
