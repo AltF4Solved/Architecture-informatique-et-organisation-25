@@ -9,16 +9,17 @@ Registers::Registers()  {
     PC=0; // dit moet bij
 }
 
-Registers::~Registers() {
-    // Nothing to free
-}
 
 void Registers::setRegister(int regNum, int value) {
     // Register $0 is special: it always reads as 0.
     if (regNum == 0)
-        return;
-    if (regNum >= 0 && regNum < 32)
-        reg[regNum] = value;
+            {
+        rgs[regNum] = 0;
+            }
+    else
+    {
+        rgs[regNum] = value;
+    }
 }
 
 int Registers::getRegister(int regNum) {
