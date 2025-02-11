@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Registers::Registers() : PC(0) {
+Registers::Registers()  {
     for (int i = 0; i < 32; i++) {
         reg[i] = 0;
     }
