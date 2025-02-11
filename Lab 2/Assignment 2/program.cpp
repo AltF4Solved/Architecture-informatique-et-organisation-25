@@ -26,7 +26,6 @@ void Program::disassemble() {
 }
 
 void Program::singleStep(Registers *registers) {
-    // Execute the instruction at the current PC (if valid)
     std::vector<Instruction*>::iterator it = instructions->begin() + registers->getPC();
     if (it >= instructions->begin() && it < instructions->end()) {
         registers->setPC((*it)->execute(registers));
