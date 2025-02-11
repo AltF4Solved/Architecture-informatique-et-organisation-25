@@ -17,4 +17,4 @@ public:
     void execute(Registers*);
 };
 
-#endif /* _PROGRAM_H_ */
+#endif

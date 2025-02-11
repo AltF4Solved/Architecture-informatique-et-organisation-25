@@ -7,7 +7,7 @@ using namespace std;
 
 class OriInstruction : public Instruction {
 private:
-    int dest, src, immediate;  // Represents: ori $dest, $src, immediate
+    int dest, src, immediate;
 public:
     OriInstruction(int dest, int src, int immediate)
         : dest(dest), src(src), immediate(immediate) {}

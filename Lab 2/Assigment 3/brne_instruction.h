@@ -9,7 +9,6 @@ private:
     int reg1, reg2;
     int offset;
 public:
-    // Branch if not equal: if reg1 != reg2 then jump relative by offset.
     BrneInstruction(int reg1, int reg2, int offset)
         : reg1(reg1), reg2(reg2), offset(offset) {}
 

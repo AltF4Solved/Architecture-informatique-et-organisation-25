@@ -7,7 +7,7 @@ using namespace std;
 
 class AddInstruction : public Instruction {
 private:
-    int dest, src1, src2;  // Represents: add $dest, $src1, $src2
+    int dest, src1, src2;
 public:
     AddInstruction(int dest, int src1, int src2)
         : dest(dest), src1(src1), src2(src2) {}

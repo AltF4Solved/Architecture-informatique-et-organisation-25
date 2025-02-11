@@ -5,9 +5,9 @@
 
 class Instruction {
 public:
-    virtual void disassemble() = 0;  // Pure virtual for disassembly
-    virtual int execute(Registers *regs) = 0;  // Pure virtual for execution
-    virtual ~Instruction() {}  // Virtual destructor
+    virtual void disassemble() = 0;
+    virtual int execute(Registers *regs) = 0;
+    virtual ~Instruction() {}
 };
 
 #endif

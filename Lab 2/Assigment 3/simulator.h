@@ -15,4 +15,4 @@ public:
     void ui();
 };
 
-#endif /* _SIMULATOR_H_ */
+#endif

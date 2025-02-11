@@ -29,7 +29,6 @@ void Simulator::help() {
 void Simulator::ui() {
     bool doQuit = false;
     while (!doQuit) {
-        // Very simple user interface with single character commands
         cout << "Command (h for help):" << endl;
         char command;
         cin >> command;
