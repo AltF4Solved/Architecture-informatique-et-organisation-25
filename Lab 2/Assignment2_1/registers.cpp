@@ -1,25 +1,31 @@
 #include "registers.h"
 #include <iostream>
+using namespace std;
 
-Registers::Registers() {
-    for (int i = 0; i < 32; ++i) {
-        registers[i] = 0;
+Registers::Registers() : PC(0) {
+    for (int i = 0; i < 32; i++) {
+        reg[i] = 0;
     }
-    PC = 0;
+}
+
+Registers::~Registers() {
+    // Nothing to free
 }
 
 void Registers::setRegister(int regNum, int value) {
-    if (regNum != 0) {
-        registers[regNum] = value;
-    }
+    // Register $0 is special: it always reads as 0.
+    if (regNum == 0)
+        return;
+    if (regNum >= 0 && regNum < 32)
+        reg[regNum] = value;
 }
 
 int Registers::getRegister(int regNum) {
-    if (regNum == 0) {
+    if (regNum == 0)
         return 0;
-    } else {
-        return registers[regNum];
-    }
+    if (regNum >= 0 && regNum < 32)
+        return reg[regNum];
+    return 0;
 }
 
 void Registers::setPC(int value) {
@@ -31,9 +37,8 @@ int Registers::getPC() {
 }
 
 void Registers::print() {
-    std::cout << "Registers:" << std::endl;
-    for (int i = 0; i < 32; ++i) {
-        std::cout << "$" << i << ": " << getRegister(i) << std::endl;
+    cout << "Program Counter (PC): " << PC << "\n";
+    for (int i = 0; i < 32; i++) {
+        cout << "$" << i << ": " << reg[i] << "\n";
     }
-    std::cout << "Program Counter (PC): " << getPC() << std::endl;
 }
