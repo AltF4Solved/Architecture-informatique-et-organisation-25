@@ -1,18 +1,28 @@
 #include "registers.h"
 #include <iostream>
-#include <algorithm>
 
-Registers::Registers() {
-    std::fill(std::begin(regs), std::end(regs), 0);
-    PC = 0;
+
+using namespace std;
+
+
+Registers::Registers ()
+{
+    for(int i = 0; i < 32; i++)
+    {
+        rgs[i] = 0;
+    }
+    pcCount = 0;
 }
 
-void Registers::setRegister(int regNum, int value) {
-    if (regNum == 0) {
-        return;
+void Registers::setRegister(int regNum, int value)
+{
+    if (regNum == 0)
+    {
+        rgs[regNum] = 0;
     }
-    if (regNum >= 0 && regNum < 32) {
-        regs[regNum] = value;
+    else
+    {
+        rgs[regNum] = value;
     }
 }
 
@@ -21,20 +31,21 @@ int Registers::getRegister(int regNum)
     return rgs[regNum];
 }
 
-void Registers::setPC(int value) {
-    PC = value;
+void Registers::setPC(int value)
+{
+    pcCount = value;
 }
 
-int Registers::getPC() {
-    return PC;
+int Registers::getPC()
+{
+    return pcCount;
 }
 
-void Registers::print() {
-    for (int i = 0; i < 32; ++i) {
-        std::cout << "$" << i << ": " << regs[i] << " ";
-        if ((i + 1) % 8 == 0) {
-            std::cout << std::endl;
-        }
+void Registers::print()
+{
+    for(int i = 0; i < 32; i++){
+        cout << "Value Register : " << i << "\t" << rgs[i] << "\n";
     }
-    std::cout << "\nProgram Counter (PC): " << PC << std::endl;
+    cout << "Program Count :\t" << pcCount << "\n";
+
 }
