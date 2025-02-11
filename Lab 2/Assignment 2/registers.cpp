@@ -11,7 +11,7 @@ Registers::Registers ()
     {
         rgs[i] = 0;
     }
-    pcCount = 0;
+    PC = 0;
 }
 
 void Registers::setRegister(int regNum, int value)
@@ -33,12 +33,12 @@ int Registers::getRegister(int regNum)
 
 void Registers::setPC(int value)
 {
-    pcCount = value;
+    PC = value;
 }
 
 int Registers::getPC()
 {
-    return pcCount;
+    return PC;
 }
 
 void Registers::print()
@@ -46,6 +46,6 @@ void Registers::print()
     for(int i = 0; i < 32; i++){
         cout << "Value Register : " << i << "\t" << rgs[i] << "\n";
     }
-    cout << "Program Count :\t" << pcCount << "\n";
+    cout << "Program Count :\t" << PC << "\n";
 
 }
