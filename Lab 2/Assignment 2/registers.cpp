@@ -6,7 +6,7 @@ Registers::Registers() : PC(0) {
     for (int i = 0; i < 32; i++) {
         reg[i] = 0;
     }
-    PC=0;
+    PC=0; // dit moet bij
 }
 
 Registers::~Registers() {
