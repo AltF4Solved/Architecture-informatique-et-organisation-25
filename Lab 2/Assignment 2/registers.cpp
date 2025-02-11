@@ -22,12 +22,9 @@ void Registers::setRegister(int regNum, int value) {
     }
 }
 
-int Registers::getRegister(int regNum) {
-    if (regNum == 0)
-        return 0;
-    if (regNum >= 0 && regNum < 32)
-        return reg[regNum];
-    return 0;
+int Registers::getRegister(int regNum)
+{
+    return rgs[regNum];
 }
 
 void Registers::setPC(int value) {
