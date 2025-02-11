@@ -1,3 +1,7 @@
+//////////////////////////////
+// By Waris Ibrahimi [5550343]
+//  & Danial Abed [5474914]
+//////////////////////////////
 #ifndef COMPUTER_H
 #define COMPUTER_H
 

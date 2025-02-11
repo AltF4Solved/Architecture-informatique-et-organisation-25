@@ -1,3 +1,7 @@
+//////////////////////////////
+// By Waris Ibrahimi [5550343]
+//  & Danial Abed [5474914]
+//////////////////////////////
 #include <iostream>
 #include "program.h"
 
