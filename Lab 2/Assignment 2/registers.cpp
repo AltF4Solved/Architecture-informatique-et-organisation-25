@@ -1,24 +1,18 @@
 #include "registers.h"
 #include <iostream>
-using namespace std;
+#include <algorithm>
 
-Registers::Registers()  {
-    for (int i = 0; i < 32; i++) {
-        reg[i] = 0;
-    }
-    PC=0; // dit moet bij
+Registers::Registers() {
+    std::fill(std::begin(regs), std::end(regs), 0);
+    PC = 0;
 }
 
-
 void Registers::setRegister(int regNum, int value) {
-    // Register $0 is special: it always reads as 0.
-    if (regNum == 0)
-            {
-        rgs[regNum] = 0;
-            }
-    else
-    {
-        rgs[regNum] = value;
+    if (regNum == 0) {
+        return;
+    }
+    if (regNum >= 0 && regNum < 32) {
+        regs[regNum] = value;
     }
 }
 
@@ -36,8 +30,11 @@ int Registers::getPC() {
 }
 
 void Registers::print() {
-    cout << "Program Counter (PC): " << PC << "\n";
-    for (int i = 0; i < 32; i++) {
-        cout << "$" << i << ": " << reg[i] << "\n";
+    for (int i = 0; i < 32; ++i) {
+        std::cout << "$" << i << ": " << regs[i] << " ";
+        if ((i + 1) % 8 == 0) {
+            std::cout << std::endl;
+        }
     }
+    std::cout << "\nProgram Counter (PC): " << PC << std::endl;
 }
