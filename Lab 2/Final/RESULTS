@@ -1,0 +1,57 @@
+Command (h for help):
+h
+Available commands:
+d       disassemble program
+e       execute program
+h       help
+q       quit
+r       print registers
+s       single step program
+Command (h for help):
+e
+Command (h for help):
+r
+Value Register : 0      0
+Value Register : 1      12
+Value Register : 2      0
+Value Register : 3      1
+Value Register : 4      48
+Value Register : 5      0
+Value Register : 6      0
+Value Register : 7      0
+Value Register : 8      0
+Value Register : 9      0
+Value Register : 10     0
+Value Register : 11     0
+Value Register : 12     0
+Value Register : 13     0
+Value Register : 14     0
+Value Register : 15     0
+Value Register : 16     0
+Value Register : 17     0
+Value Register : 18     0
+Value Register : 19     0
+Value Register : 20     0
+Value Register : 21     0
+Value Register : 22     0
+Value Register : 23     0
+Value Register : 24     0
+Value Register : 25     0
+Value Register : 26     0
+Value Register : 27     0
+Value Register : 28     0
+Value Register : 29     0
+Value Register : 30     0
+Value Register : 31     0
+Program Count : 6
+Command (h for help):
+s
+Command (h for help):
+d
+Ori     $1      $0      12
+Ori     $2      $0      4
+Ori     $3      $0      1
+add     $4      $4      $1
+Sub     $2      $2      $3
+Brne    $2      $0      -3
+Command (h for help):
