@@ -1,1 +1,1 @@
-# Computer-Architecture-and-Organization-25
+Put these files in your Questasim VHDL work directory of your project, the simulate them.
