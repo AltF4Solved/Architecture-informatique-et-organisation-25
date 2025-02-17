@@ -1,0 +1,24 @@
+#include <iostream>
+#include "computer.h"
+
+Computer::Computer(double clockRate,
+                   double arithcpi,
+                   double storecpi,
+                   double loadcpi,
+                   double branchcpi) :
+                   clockRateGHz(clockRate),
+                   cpiArith(arithcpi),
+                   cpiStore(storecpi),
+                   cpiLoad(loadcpi),
+                   cpiBranch(branchcpi) {}
+
+void Computer::printStats() {
+    std::cout << "Clock rate: " << clockRateGHz << " GHz" << std::endl;
+    std::cout << "Arithmetic CPI: " << cpiArith << std::endl;
+    std::cout << "Store CPI: " << cpiStore << std::endl;
+    std::cout << "Load CPI: " << cpiLoad << std::endl;
+    std::cout << "Branch CPI: " << cpiBranch << std::endl;}
+
+double Computer::calculateGlobalCPI() {
+    double globalCPI = (cpiArith + cpiStore + cpiLoad + cpiBranch) / 4.0;
+    return globalCPI;}

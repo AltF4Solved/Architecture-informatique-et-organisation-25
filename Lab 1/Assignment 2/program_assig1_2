@@ -1,0 +1,31 @@
+#include <iostream>
+#include "program.h"
+
+Program::Program(int arith,
+            int store,
+            int load,
+            int branch) {
+            numArith = arith;
+            numStore = store;
+            numLoad = load;
+            numBranch = branch;}
+
+Program::Program(int instrtot,
+            double arithfrac,
+            double storefrac,
+            double loadfrac) {
+            numArith = instrtot + arithfrac;
+            numStore = instrtot + storefrac;
+            numLoad = instrtot + loadfrac;
+            numBranch = instrtot - (numArith + numStore + numLoad);
+            numTotal = instrtot;}
+
+int Program::numTot() {
+    return numTotal;}
+
+void Program::printStats() {
+    std::cout << "Arithmetic and Logic calculations: " << numArith << std::endl;
+    std::cout << "Store instructions: " << numStore << std::endl;
+    std::cout << "Load instructions: " << numLoad << std::endl;
+    std::cout << "Branch instructions: " << numBranch << std::endl;
+    std::cout << "Total instructions: " << numTotal << std::endl;}

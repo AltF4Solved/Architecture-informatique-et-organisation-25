@@ -1,0 +1,26 @@
+//////////////////////////////
+// By Waris Ibrahimi [5550343]
+//////////////////////////////
+#ifndef COMPUTER_H
+#define COMPUTER_H
+
+class Computer {
+public:
+    Computer(double clockRate,
+             double arithcpi,
+             double storecpi,
+             double loadcpi,
+             double branchcpi);
+
+    void printStats();
+    double calculateGlobalCPI();
+
+private:
+    double clockRateGHz;
+    double cpiArith;
+    double cpiStore;
+    double cpiLoad;
+    double cpiBranch;
+};
+
+#endif // COMPUTER_H
