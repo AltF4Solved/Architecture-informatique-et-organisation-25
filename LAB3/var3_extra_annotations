@@ -1,0 +1,295 @@
+# Data segment for strings and array storage
+.data
+    promptSize:      .asciiz "Insert the array size\n"       # Prompt for array size
+    promptElements:  .asciiz "Insert the array elements, one per line\n"  # Prompt for array elements
+    outputMsg:       .asciiz "The sorted array is:\n"        # Message for sorted array output
+    newline:         .asciiz "\n"                           # Newline character for formatting
+
+.text
+.globl main
+
+###############################################################################
+# Function: insert
+# Arguments:
+#   $a0 - array base address
+#   $a1 - length
+#   $a2 - elem to insert
+#   $a3 - position i to insert at
+# Returns: void
+# Corresponds to the C++ function:
+# void insert(int a[], int length, int elem, int i)
+###############################################################################
+insert:
+    # Save registers
+    addi $sp, $sp, -16
+    sw   $ra, 12($sp)       # Save return address
+    sw   $s0, 8($sp)        # Save $s0
+    sw   $s1, 4($sp)        # Save $s1
+    sw   $s2, 0($sp)        # Save $s2
+    
+    # Initialize
+    move $s0, $a1           # $s0 = j = length - 1
+    addi $s0, $s0, -1       # j = length - 1
+    move $s1, $a0           # $s1 = array base address
+    move $s2, $a3           # $s2 = position i
+    
+shift_loop:
+    blt  $s0, $s2, insert_elem  # if j < i, exit loop
+    
+    # a[j+1] = a[j]
+    sll  $t0, $s0, 2        # $t0 = j * 4 (byte offset)
+    add  $t0, $s1, $t0      # $t0 = address of a[j]
+    lw   $t1, 0($t0)        # $t1 = a[j]
+    sw   $t1, 4($t0)        # a[j+1] = a[j]
+    
+    addi $s0, $s0, -1       # j--
+    j    shift_loop         # Repeat loop
+    
+insert_elem:
+    # a[i] = elem
+    sll  $t0, $s2, 2        # $t0 = i * 4 (byte offset)
+    add  $t0, $s1, $t0      # $t0 = address of a[i]
+    sw   $a2, 0($t0)        # a[i] = elem
+    
+    # Restore registers
+    lw   $ra, 12($sp)       # Restore return address
+    lw   $s0, 8($sp)        # Restore $s0
+    lw   $s1, 4($sp)        # Restore $s1
+    lw   $s2, 0($sp)        # Restore $s2
+    addi $sp, $sp, 16       # Deallocate stack space
+    
+    jr   $ra                # Return to caller
+
+###############################################################################
+# Function: binarySearch
+# Arguments:
+#   $a0 - array base address
+#   $a1 - length
+#   $a2 - elem to search for
+# Returns:
+#   $v0 - position where elem should be inserted
+# Corresponds to the C++ function:
+# int binarySearch(int a[], int length, int elem)
+###############################################################################
+binarySearch:
+    # Save registers
+    addi $sp, $sp, -20
+    sw   $ra, 16($sp)       # Save return address
+    sw   $s0, 12($sp)       # Save $s0
+    sw   $s1, 8($sp)        # Save $s1
+    sw   $s2, 4($sp)        # Save $s2
+    sw   $s3, 0($sp)        # Save $s3
+    
+    # Initialize
+    li   $s0, -1            # $s0 = low = -1
+    move $s1, $a1           # $s1 = high = length
+    move $s2, $a0           # $s2 = array base address
+    move $s3, $a2           # $s3 = elem to search for
+    
+search_loop:
+    sub  $t0, $s1, $s0      # $t0 = high - low
+    addi $t1, $t0, -1       # $t1 = (high - low) - 1
+    blez $t1, end_search    # if low >= high-1, exit loop
+    
+    # mid = (low + high) / 2
+    add  $t0, $s0, $s1      # $t0 = low + high
+    sra  $t0, $t0, 1        # $t0 = mid = (low + high) / 2
+    
+    # Load a[mid]
+    sll  $t1, $t0, 2        # $t1 = mid * 4 (byte offset)
+    add  $t1, $s2, $t1      # $t1 = address of a[mid]
+    lw   $t2, 0($t1)        # $t2 = a[mid]
+    
+    # Compare a[mid] with elem
+    blt  $t2, $s3, mid_less # if a[mid] < elem, go to mid_less
+    move $s1, $t0           # high = mid
+    j    search_loop        # Repeat loop
+    
+mid_less:
+    move $s0, $t0           # low = mid
+    j    search_loop        # Repeat loop
+    
+end_search:
+    # Return high
+    move $v0, $s1           # $v0 = high (position to insert)
+    
+    # Restore registers
+    lw   $ra, 16($sp)       # Restore return address
+    lw   $s0, 12($sp)       # Restore $s0
+    lw   $s1, 8($sp)        # Restore $s1
+    lw   $s2, 4($sp)        # Restore $s2
+    lw   $s3, 0($sp)        # Restore $s3
+    addi $sp, $sp, 20       # Deallocate stack space
+    
+    jr   $ra                # Return to caller
+
+###############################################################################
+# Function: insertionSort
+# Arguments:
+#   $a0 - array base address
+#   $a1 - length
+# Returns: void
+# Corresponds to the C++ function:
+# void insertionSort(int a[], int length)
+###############################################################################
+insertionSort:
+    # Save registers
+    addi $sp, $sp, -28
+    sw   $ra, 24($sp)       # Save return address
+    sw   $s0, 20($sp)       # Save $s0
+    sw   $s1, 16($sp)       # Save $s1
+    sw   $s2, 12($sp)       # Save $s2
+    sw   $s3, 8($sp)        # Save $s3
+    sw   $s4, 4($sp)        # Save $s4
+    sw   $s5, 0($sp)        # Save $s5
+    
+    # Initialize
+    move $s0, $a0           # $s0 = array base address
+    move $s1, $a1           # $s1 = length
+    
+    # Allocate array b
+    sll  $a0, $a1, 2        # $a0 = length * 4 (size in bytes)
+    li   $v0, 9             # Syscall for sbrk (dynamic memory allocation)
+    syscall
+    move $s2, $v0           # $s2 = base address of array b
+    
+    # Main sorting loop
+    move $s3, $zero         # $s3 = i = 0
+sort_loop:
+    beq  $s3, $s1, copy_back  # if i == length, exit loop
+    
+    # Load a[i]
+    sll  $t0, $s3, 2        # $t0 = i * 4 (byte offset)
+    add  $t0, $s0, $t0      # $t0 = address of a[i]
+    lw   $s4, 0($t0)        # $s4 = a[i]
+    
+    # Call binarySearch
+    move $a0, $s2           # $a0 = b array base address
+    move $a1, $s3           # $a1 = current length (i)
+    move $a2, $s4           # $a2 = element to insert (a[i])
+    jal  binarySearch       # Call binarySearch
+    move $s5, $v0           # $s5 = position to insert
+    
+    # Call insert
+    move $a0, $s2           # $a0 = b array base address
+    move $a1, $s3           # $a1 = current length (i)
+    move $a2, $s4           # $a2 = element to insert (a[i])
+    move $a3, $s5           # $a3 = position to insert
+    jal  insert             # Call insert
+    
+    addi $s3, $s3, 1        # i++
+    j    sort_loop          # Repeat loop
+    
+copy_back:
+    # Copy array b back to a
+    move $s3, $zero         # $s3 = i = 0
+copy_loop:
+    beq  $s3, $s1, end_sort  # if i == length, exit loop
+    
+    sll  $t0, $s3, 2        # $t0 = i * 4 (byte offset)
+    add  $t1, $s2, $t0      # $t1 = address in b
+    add  $t2, $s0, $t0      # $t2 = address in a
+    lw   $t3, 0($t1)        # $t3 = b[i]
+    sw   $t3, 0($t2)        # a[i] = b[i]
+    
+    addi $s3, $s3, 1        # i++
+    j    copy_loop          # Repeat loop
+    
+end_sort:
+    # Restore registers
+    lw   $ra, 24($sp)       # Restore return address
+    lw   $s0, 20($sp)       # Restore $s0
+    lw   $s1, 16($sp)       # Restore $s1
+    lw   $s2, 12($sp)       # Restore $s2
+    lw   $s3, 8($sp)        # Restore $s3
+    lw   $s4, 4($sp)        # Restore $s4
+    lw   $s5, 0($sp)        # Restore $s5
+    addi $sp, $sp, 28       # Deallocate stack space
+    
+    jr   $ra                # Return to caller
+
+###############################################################################
+# Main function
+# Corresponds to the C++ main function
+###############################################################################
+main:
+    # Save $ra
+    addi $sp, $sp, -4
+    sw   $ra, 0($sp)        # Save return address
+    
+    # Print prompt for array size
+    li   $v0, 4             # Syscall for print string
+    la   $a0, promptSize    # Load address of promptSize
+    syscall
+    
+    # Read array size
+    li   $v0, 5             # Syscall for read integer
+    syscall
+    move $s0, $v0           # $s0 = length
+    
+    # Allocate array memory
+    sll  $a0, $s0, 2        # $a0 = length * 4 (size in bytes)
+    li   $v0, 9             # Syscall for sbrk (dynamic memory allocation)
+    syscall
+    move $s1, $v0           # $s1 = array base address
+    
+    # Print prompt for elements
+    li   $v0, 4             # Syscall for print string
+    la   $a0, promptElements  # Load address of promptElements
+    syscall
+    
+    # Read array elements
+    move $s2, $zero         # $s2 = i = 0
+read_loop:
+    beq  $s2, $s0, end_read  # if i == length, exit loop
+    
+    # Read integer
+    li   $v0, 5             # Syscall for read integer
+    syscall
+    
+    # Store in array
+    sll  $t0, $s2, 2        # $t0 = i * 4 (byte offset)
+    add  $t0, $s1, $t0      # $t0 = address of a[i]
+    sw   $v0, 0($t0)        # a[i] = input value
+    
+    addi $s2, $s2, 1        # i++
+    j    read_loop          # Repeat loop
+end_read:
+
+    # Call insertionSort
+    move $a0, $s1           # $a0 = array base address
+    move $a1, $s0           # $a1 = length
+    jal  insertionSort      # Call insertionSort
+    
+    # Print sorted array message
+    li   $v0, 4             # Syscall for print string
+    la   $a0, outputMsg     # Load address of outputMsg
+    syscall
+    
+    # Print sorted array
+    move $s2, $zero         # $s2 = i = 0
+print_loop:
+    beq  $s2, $s0, end_print  # if i == length, exit loop
+    
+    # Load and print integer
+    sll  $t0, $s2, 2        # $t0 = i * 4 (byte offset)
+    add  $t0, $s1, $t0      # $t0 = address of a[i]
+    lw   $a0, 0($t0)        # $a0 = a[i]
+    li   $v0, 1             # Syscall for print integer
+    syscall
+    
+    # Print newline
+    li   $v0, 4             # Syscall for print string
+    la   $a0, newline       # Load address of newline
+    syscall
+    
+    addi $s2, $s2, 1        # i++
+    j    print_loop         # Repeat loop
+end_print:
+
+    # Restore $ra and return
+    lw   $ra, 0($sp)        # Restore return address
+    addi $sp, $sp, 4        # Deallocate stack space
+    
+    li   $v0, 10            # Syscall for exit
+    syscall
