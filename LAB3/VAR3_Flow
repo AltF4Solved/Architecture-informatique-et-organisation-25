@@ -1,0 +1,76 @@
+insert - Inserts an element into an array at a specific position by shifting elements.
+binarySearch - Finds the correct position to insert an element in a sorted array.
+insertionSort - Implements binary insertion sort using binarySearch and insert.
+main - Handles input/output and calls insertionSort.
+
+
+
+Step-by-Step Execution Flow
+Step 1: Program Starts (main)
+
+    The program starts at the main label.
+    Prompts the user to enter the size of the array (promptSize).
+    Reads an integer (syscall 5) from standard input and stores it in $s0 (array length).
+
+Step 2: Memory Allocation for Array
+
+    Allocates space for the array using sbrk (syscall 9).
+        $a0 = size * 4 (each integer is 4 bytes).
+        $v0 holds the base address of the allocated memory, stored in $s1.
+
+Step 3: Reading Array Elements
+
+    Prompts the user to enter the array elements (promptElements).
+    Reads each integer from input (syscall 5) and stores it in memory ($s1).
+
+Step 4: Sorting Using insertionSort
+
+    Calls insertionSort($s1, $s0), passing:
+        $a0 = $s1 (base address of array).
+        $a1 = $s0 (size of array).
+
+
+Step-by-Step Sorting (insertionSort)
+
+    Allocate memory for a secondary array b using sbrk.
+        $s2 stores the base address of b.
+
+    Loop through each element of a (sort_loop)
+    For each element:
+        Loads a[i] into $s4.
+        Calls binarySearch($s2, i, a[i]) to find the correct position ($s5).
+        Calls insert($s2, i, a[i], $s5) to place the element in b.
+
+    Copy b back to a (copy_back).
+        The sorted elements in b are copied back into a.
+
+Step-by-Step Binary Search (binarySearch)
+
+    Called from insertionSort to find the position to insert a[i] in b.
+    Performs a binary search to find the insertion point.
+        Maintains low = -1 and high = i.
+        Iteratively computes mid = (low + high) / 2.
+        If a[mid] < elem, update low = mid.
+        Otherwise, update high = mid.
+    Returns high as the insertion position.
+
+Step-by-Step Insert (insert)
+
+    Called from insertionSort to insert an element into b at the correct position.
+    Shift elements right to make space for the new element.
+    Stores the new element in b[position].
+
+Step 5: Printing the Sorted Array
+
+    Prints "The sorted array is:" (outputMsg).
+    Loops through the array and prints each element using syscall 1 (print integer).
+
+
+Insertion Sort Complexity:
+
+    O(n^2) worst case (but faster than regular insertion sort due to binary search).
+
+Optimized Sorting:
+
+    Uses binarySearch to minimize comparisons (O(log n) per insertion).
+    Uses insert to shift elements efficiently.
