@@ -1,0 +1,90 @@
+#include "LPC13xx.h"
+#include "delay.h"
+#include <stdbool.h>
+
+// Initialize GPIO for LED
+static void init_leds(void) {
+    LPC_GPIO3->DIR = (1 << 0);  // Configure PIO3_0 as Output
+}
+
+// Turn LED off
+static void led_off(void) {
+    LPC_GPIO3->DATA |= (1 << 0);  // Drive output HIGH to turn LED OFF
+}
+
+// Turn LED on
+static void led_on(void) {
+    LPC_GPIO3->DATA &= ~(1 << 0);  // Drive output LOW to turn LED ON
+}
+
+// Initialize button
+static void init_button(void) {
+    LPC_GPIO2->DIR &= ~(1 << 9);  // Configure PIO2_1 as Input
+}
+
+// Check if button is pressed
+static bool but1_pressed(void) {
+    return (LPC_GPIO2->DATA & (1 << 9)) == 0;  // Return 1 if PIO2_1 is low
+}
+
+void pin_low(void) {
+    LPC_GPIO0->DATA &= ~(1 << 6);
+}
+
+void pin_high(void) {
+    LPC_GPIO0->DATA |= (1 << 6);
+}IR
+
+void timer_start(void) {
+    LPC_TMR32B0->TCR &= ~(1 << 1);
+    LPC_TMR32B0->TCR = (1 << 0);
+}
+
+void timer_stop(void) {
+    LPC_TMR32B0->TCR = (1 << 1);
+}
+
+
+
+void init_pin(void) {
+    LPC_GPIO0->DIR |= (1 << 6);
+    LPC_GPIO0->DATA &= ~(1 << 6);
+}
+
+void resetIR_MR0(void) {
+    LPC_TMR32B0->IR = (1 << 0);
+}
+
+void resetIR_MR3(void) {
+    LPC_TMR32B0->IR = (1 << 3);
+}
+
+// Invert LED state
+static void invert_led(void) {
+    static bool led_state = false;
+    led_state = !led_state;
+    if (led_state) {
+        led_on();
+    } else {
+        led_off();
+    }
+}
+
+int main(void) {
+    init_leds();  // Initialize LED pin
+    init_button();  // Initialize button
+    led_off();  // Turn LED off
+    //init_timer();  // Initialize timer
+    //timer_start();  // Start timer
+
+    bool led_state = false;
+
+    while (1) {
+        if (but1_pressed()) {
+            invert_led();  // Invert LED state
+            delay_ms(200); // debounce
+        }
+
+
+    }
+}
