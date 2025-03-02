@@ -56,3 +56,59 @@ int main(void) {
 
     return 0; // Return from main
 }
+
+
+
+
+
+// #include <stdint.h>
+// #include <stdbool.h>
+// #include "LPC13xx.h" // Device header
+
+// void pin_low(void) {
+//     LPC_GPIO1->DATA &= ~(1 << 6); // Set pin PIO1_6 low to match main2.c functionality
+// }
+
+// void pin_high(void) {
+//     LPC_GPIO1->DATA |= (1 << 6); // Set pin PIO1_6 high to match main2.c functionality
+// }
+
+// void initialize(void) {
+//     LPC_SYSCON->SYSAHBCLKCTRL |= (1<<9); // Enabling clock for CT32B0 as in main2.c
+//     LPC_TMR32B0->TCR = 0; // Disable timer to setup
+//     LPC_TMR32B0->TC = 0; // Reset timer counter
+//     LPC_TMR32B0->PR = 0x0AFC80; // Prescale register for 1 Hz
+//     LPC_TMR32B0->PC = 0; // Reset prescale counter
+//     LPC_TMR32B0->MR0 = 0x50; // Match register 0
+//     LPC_TMR32B0->MR3 = 0x64; // Match register 3
+//     LPC_TMR32B0->MCR = (1<<0) | (1<<9) | (1<<10); // Configure match control register
+
+//     LPC_GPIO1->DIR |= (1 << 6); // Set PIO1_6 as output
+//     LPC_GPIO3->DIR |= 1; // Set GPIO3 as output for LED control
+// }
+
+// void timer_start(void) {
+//     LPC_TMR32B0->TCR = (1<<0); // Enable timer
+// }
+
+// void timer_stop(void) {
+//     LPC_TMR32B0->TCR &= ~(1<<0); // Disable timer
+//     LPC_TMR32B0->TCR |= (1<<1); // Reset timer
+// }
+
+// int main(void) {
+//     initialize();
+//     timer_start();
+//     while(1) {
+//         if (LPC_TMR32B0->IR & (1<<3)) { // Check MR3 interrupt
+//             pin_high();
+//             LPC_TMR32B0->IR = (1<<3); // Clear MR3 interrupt
+//         }
+
+//         if ((LPC_TMR32B0->IR & (1<<0)) && !(LPC_TMR32B0->IR & (1<<3))) { // Check MR0 interrupt and ensure MR3 is not set
+//             pin_low();
+//             LPC_TMR32B0->IR = (1<<0); // Clear MR0 interrupt
+//         }
+//     }
+//     return 0;
+// }
