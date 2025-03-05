@@ -1,0 +1,49 @@
+#include <stdint.h>
+#include <stdbool.h>
+#include "LPC13xx.h"
+#define BUTTON_PIN (1 << 9)
+#define LED_PIN (1 << 0)
+#define IOCON_PIO2_9 (*((volatile unsigned long *)(0x4004405)))
+#define GPIO3DIR (*((volatile unsigned long *)(0x50038000)))
+#define GPIO3DATA (*((volatile unsigned long *)(0x50033FFC)))
+#define TIMER_ENABLE (1 << 0)
+#define TIMER_RESET (1 << 1)
+#define PWM_CHANNEL_ENABLE (1 << 0)
+
+void init_led(void) {
+    GPIO3DIR |= LED_PIN;
+    GPIO3DATA &= ~LED_PIN;
+}
+
+void led_on(void) {
+    LPC_GPIO3->DATA &= ~(1 << 0);
+}
+
+void led_off(void) {
+    LPC_GPIO3->DATA |= (1 << 0);
+}
+
+void init_button(void) {
+    LPC_GPIO2->DIR &= ~BUTTON_PIN;
+}
+
+static bool but1_pressed(void) {
+    return !(LPC_GPIO2->DATA & BUTTON_PIN);
+}
+
+void blink(void) {
+    if (but1_pressed()) {
+        led_on();
+    }
+    else{
+        led_off();
+    }
+}
+int main(void) {
+    init_led();
+    led_off();
+    while (1) {
+        blink();
+        delay_ms(25);
+    }
+}
