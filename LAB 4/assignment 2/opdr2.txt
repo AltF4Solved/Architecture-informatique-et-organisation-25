@@ -1,0 +1,99 @@
+### Assignment Overview
+
+The assignment involves working with the I\(^2\)C protocol on an ARM microcontroller (LPC1343) to communicate with a TMP102 temperature sensor. The assignment is divided into several parts:
+
+1. **Preparations**: Read the relevant sections of the manual and complete homework assignments.
+2. **ARM Assignment 3.1**: Understand the I\(^2\)C hardware and software support in the LPC1343.
+3. **ARM Assignment 3.2**: Work with the TMP102 temperature sensor, including understanding its I\(^2\)C address and temperature representation.
+4. **ARM Assignment 3.3**: Implement I\(^2\)C communication using polling.
+5. **ARM Assignment 3.4**: Implement I\(^2\)C communication using interrupts.
+
+### Homework Assignments and Questions
+
+#### 13.2.1 Homework Assignments: Hardware
+- **Which pin is connected to SDA?**
+  - Answer: PIO0_5
+- **Which pin is connected to SCL?**
+  - Answer: PIO0_4
+
+#### Homework Assignments: Software
+- **What line of code would you use to set the Start flag (STA)?**
+  - Answer: `LPC_I2C->CONSET = (1<<5);`
+- **What line of code would you use to clear the I\(^2\)C interrupt flag?**
+  - Answer: `LPC_I2C->CONCLR = (1<<3);`
+- **Which register is used for reading or writing data?**
+  - Answer: `LPC_I2C->DAT`
+- **The ST flag can be polled to check if an I\(^2\)C event has occurred. What line of code would you use to wait for an I\(^2\)C event?**
+  - Answer: `while (!(LPC_I2C->STAT & (1<<3)) {};`
+
+#### Homework Assignments: TMP102
+- **The address of the TMP102 is configurable via the ADD0 pin. On the PCB, this pin is connected to GND. Determine the real address and the derived read and write addresses (in hexadecimal).**
+  - Answer: The real address is 0x48. The read address is 0x91, and the write address is 0x90.
+- **By default, the TMP102 uses a 12-bit format to represent the temperature. Using this 12-bit format, what will be the representation of -12°C and 30°C?**
+  - Answer: -12°C: 0xF4C, 30°C: 0x1E0
+- **In the default 12-bit format, which temperatures are represented by the numbers 0010 1010 1001 and 1101 0100 1000?**
+  - Answer: 0010 1010 1001: 42.5625°C, 1101 0100 1000: -42.5625°C
+- **How many bits of the 12-bit result are sufficient to represent the temperature truncated to whole numbers?**
+  - Answer: 8 bits
+
+### Code Analysis
+
+#### `main_I2C.c`
+
+This file implements I\(^2\)C communication using interrupts. Here's a breakdown of the code:
+
+1. **Initialization (`init` function)**:
+   - Configures the SCL (PIO0_4) and SDA (PIO0_5) pins.
+   - Enables the I\(^2\)C clock and de-asserts the reset.
+   - Sets the I\(^2\)C clock speed to 100 kHz.
+   - Enables the I\(^2\)C interface and the I\(^2\)C interrupt.
+
+2. **Start and Stop Functions**:
+   - `start`: Sets the start condition by setting the STA flag and clears the SI flag.
+   - `stop`: Clears the STA and SI flags and sets the stop condition.
+
+3. **Send Function**:
+   - `send`: Writes data to the I\(^2\)C data register.
+
+4. **Interrupt Handler (`I2C_Handler`)**:
+   - Handles different I\(^2\)C events based on the status register value.
+   - For example, when a start condition is detected (status 0x08), it sends the slave write address (0x90).
+   - When data is received (status 0x58), it sets the LEDs to display the received data and restarts the communication.
+
+5. **Main Function**:
+   - Initializes the system and starts the I\(^2\)C communication.
+   - Enters a low-power wait-for-interrupt loop.
+
+#### `main_cmsis.c`
+
+This file is unrelated to the I\(^2\)C assignment and appears to be a separate implementation for PWM (Pulse Width Modulation) using a timer. It configures a pin for PWM output and sets up a timer to generate a PWM signal with a specific frequency and duty cycle.
+
+### Code Correctness and Functionality
+
+#### `main_I2C.c`
+
+- **Correctness**: The code generally follows the I\(^2\)C protocol and handles the basic states correctly. However, there are a few issues:
+  - The `stop` function clears the AA (Acknowledge Action) flag, which is not necessary for stopping the communication.
+  - The interrupt handler does not handle all possible status codes, which could lead to unhandled states.
+  - The `start` function is called again after receiving data, which might not be necessary depending on the desired behavior.
+
+- **Functionality**: The code should be able to read data from the TMP102 sensor and display it on the LEDs. However, it might not handle all edge cases or errors gracefully.
+
+#### `main_cmsis.c`
+
+- **Correctness**: The code correctly initializes the timer and pin for PWM output and sets the appropriate match values for the desired frequency and duty cycle.
+- **Functionality**: The code should generate a PWM signal with a 100 Hz frequency and an 80% duty cycle on the specified pin.
+
+### Suggestions for Improvement
+
+1. **`main_I2C.c`**:
+   - Add error handling for unhandled status codes in the interrupt handler.
+   - Ensure that the `stop` function only clears the necessary flags.
+   - Consider removing the redundant `start` call after receiving data unless it is required for continuous reading.
+
+2. **`main_cmsis.c`**:
+   - The code is well-structured and functional. No major improvements are needed unless specific additional features are required.
+
+### Conclusion
+
+The `main_I2C.c` code is mostly correct and should work for basic I\(^2\)C communication with the TMP102 sensor. However, it could be improved by adding more robust error handling and ensuring all I\(^2\)C states are properly managed. The `main_cmsis.c` code is correct and functional for generating PWM signals.
