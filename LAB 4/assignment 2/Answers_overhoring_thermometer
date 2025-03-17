@@ -1,0 +1,12 @@
+Derived Read and Write Addresses
+
+I²C uses 8-bit addresses for transactions:
+
+    Write Address: (0x48 << 1) | 0 = 0x90
+    Read Address: (0x48 << 1) | 1 = 0x91
+
+Final Answer:
+
+    7-bit Address: 0x48
+    Write Address (8-bit): 0x90
+    Read Address (8-bit): 0x91
