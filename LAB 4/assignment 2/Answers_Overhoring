@@ -1,0 +1,31 @@
+Lines where SI is cleared:
+
+    Line inside case 0x08 (Start condition sent)
+
+LPC_I2C->CONCLR = (1<<3) | (1<<5);
+
+    Clears SI (1<<3) and Start condition flag (1<<5).
+
+Line inside case 0x18 (Slave address + write ACK received)
+
+LPC_I2C->CONCLR = (1<<3);
+
+    Clears SI to move forward.
+
+Line inside case 0x28 (Data transmitted and ACK received)
+
+LPC_I2C->CONCLR = (1<<3);
+
+    Clears SI.
+
+Line inside case 0x10 (Repeated start condition sent)
+
+LPC_I2C->CONCLR = (1<<3) | (1<<5);
+
+    Clears SI and Start condition flag.
+
+Line inside case 0x40 (Slave address + read ACK received)
+
+LPC_I2C->CONCLR = (1<<3) | (1<<2);
+
+    Clears SI and Acknowledge flag (AA).
