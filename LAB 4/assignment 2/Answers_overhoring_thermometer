@@ -17,6 +17,7 @@ Final Answer:
     Write Address (8-bit): 0x90
     Read Address (8-bit): 0x91
 
+-----------------------------------------------------------------
 
 y default, the TMP102 uses a 12-bit format to represent the temperature. Using
 this 12-bit format, what will be the representation of -12◦C and 30◦C?
@@ -54,3 +55,42 @@ Final Answer:
 
     30°C in 12-bit format: 0001 1110 0000 (Hex: 0x1E0)
     -12°C in 12-bit format: 1111 0100 0000 (Hex: 0xF40)
+
+----------------------------------------------------------------
+
+n the default 12-bit format, which temperatures are represented by the numbers
+0010 1010 1001 and 1101 0100 1000?
+Answer:
+
+The TMP102 temperature sensor uses a 12-bit two's complement format, where:
+
+    Bit 11 (MSB) is the sign bit:
+        0 → Positive temperature
+        1 → Negative temperature
+    Bits [10:0] store the magnitude
+    Each bit step represents 0.0625°C
+
+Step 1: Decode 0010 1010 1001
+
+    Binary: 0010 1010 1001
+    Convert to decimal (since MSB is 0, it's positive)
+        0010 1010 1001 (binary) = 681 (decimal)
+    Convert to temperature:
+        681×0.0625681×0.0625
+        42.56°C
+
+Final Answer: 42.56°C
+Step 2: Decode 1101 0100 1000
+
+    Binary: 1101 0100 1000
+    Since MSB is 1, it's a negative temperature (two's complement).
+        Invert bits: 0010 1011 0111
+        Add 1: 0010 1011 1000
+        0010 1011 1000 (binary) = 696 (decimal)
+    Convert to temperature:
+        696×0.0625=43.5696×0.0625=43.5
+        Apply negative sign: -43.5°C
+
+Final Answer: -43.5°C
+
+------------------------------------------------
