@@ -94,3 +94,28 @@ Step 2: Decode 1101 0100 1000
 Final Answer: -43.5°C
 
 ------------------------------------------------
+
+
+How many bits of the 12-bit result are sufficient to represent the temperature
+truncated to whole numbers?
+Answer:
+
+The TMP102 temperature sensor uses a 12-bit two’s complement format, where each bit represents 0.0625°C.
+Step 1: Determine the Required Precision
+
+    Whole numbers (°C) mean we don’t need the fractional part.
+    The least significant 4 bits (bits [3:0]) represent fractional values:
+        Bit 3 → 0.5°C
+        Bit 2 → 0.25°C
+        Bit 1 → 0.125°C
+        Bit 0 → 0.0625°C
+    These lower 4 bits can be discarded when rounding to whole numbers.
+
+Step 2: Identify the Necessary Bits
+
+    Bits [11:4] contain the whole number part (sign + integer value).
+    Only 8 bits (bits [11:4]) are required to represent temperatures as whole numbers.
+
+Final Answer:
+
+    8 bits (bits [11:4]) are sufficient to represent whole-number temperatures.
